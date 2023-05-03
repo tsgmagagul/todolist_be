@@ -1,5 +1,5 @@
 //CRUD - Create, Read, Update Delete
-const ListModel = require('../models/list_models');
+const ListModel = require('../modules/list_models');
 const catchAsync = require('../utils/catchAsync');
 
 
@@ -7,59 +7,59 @@ const catchAsync = require('../utils/catchAsync');
 exports.createList = catchAsync(async(req, res)=>{
     let data =
     {
-        user_id: req.body.user_id,
+        list_id: req.body.list_id,
         title: req.body.title,
         descripion: req.body.descripion,
     
     
     }
     console.log(data)    
-    const user = await ListModel.create(data);
+    const list = await ListModel.create(data);
 
     //INSERT INTO [tablename] VALUES...
     res.status(200).json({
         status:"success",
         message: "list Created Successfully",
-        user
+        list
     })
 });
 
 
 exports.getList = catchAsync(async(req, res, next)=>{
-    const user  = await ListModel.findAll()
-    if(!user){
-        return next(new Error(' not list found!'))
+    const list  = await ListModel.findAll()
+    if(!list){
+        return next(new Error(' list not found!'))
     }
     else
-     return res.send(user);
+     return res.send(list);
 });
 
 
     
-    exports.updateUser = catchAsync(async(req,res , next ) =>{
-           req.body.UserId =req.user.UserId;
+    exports.updateList = catchAsync(async(req,res , next ) =>{
+           req.body.list_Id =req.list.list_Id;
         
-          const user = await ListModel.update(req.body, {where: { UserId:req.user.UserId}});
-          if(!user){
-               return next(new Error('Users not found!'));
+          const list = await ListModel.update(req.body, {where: {list_Id:req.list.list_Id}});
+          if(!list){
+               return next(new Error('item not found!'));
            }
         
           res.status(200).json({
          status: "success",
-        message:"Profile successfully updated"
+        message:"Item successully updated"
         
          });
         
         });
         
-        exports.DeleteUser = catchAsync(async(req,res, next)=>{
+        exports.DeleteList = catchAsync(async(req,res)=>{
         
-        const list = await ListModel.destroy(req.body , {where: {UserId:req.user.UserId}})
+        const list = await ListModel.destroy(req.body , {where: {list_Id:req.list.list_Id}})
         
         
         res.status(200).json({
            status: "success",
-            message:"Profile successfully Deleted"
+            message:"List successfully Deleted"
             
          });
         });
